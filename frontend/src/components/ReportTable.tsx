@@ -10,6 +10,7 @@ const ReportTable = ({ products }: any) => {
           <th>Category</th>
           <th>Qty</th>
           <th>Added By</th>
+          <th>Status</th>
           <th>Date</th>
         </tr>
       </thead>
@@ -21,6 +22,7 @@ const ReportTable = ({ products }: any) => {
             <td>{prod.category}</td>
             <td>{prod.quantity}</td>
             <td>{prod.addedBy}</td>
+            <td>{prod.status}</td>
             <td>{new Date(prod.createdAt).toLocaleDateString()}</td>
           </tr>
         ))}

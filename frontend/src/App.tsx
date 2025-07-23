@@ -10,11 +10,11 @@ import ProductPage from "./pages/ProductPage";
 import ApprovalPage from "./pages/ApprovalPage";
 import MyProductsPage from "./pages/MyProductPage";
 import AddProductPage from "./components/AddProductPage";
-import Reports from "./pages/Reports";
+// import ProductListPage from "./pages/ProductListPage";
 import AdminReports from "./pages/AdminReports";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import "./App.css"; // Import your global styles
 const App = () => {
   return (
     <>
@@ -35,11 +35,11 @@ const App = () => {
         <Route path="/user" element={<UserDashboard />} />
         <Route path="/products" element={<ProductPage />} />
         <Route path="/products/add" element={<AddProductPage />} />
-
+ {/* <Route path="/products" element={<ProductListPage />} /> */}
         <Route path="/products/edit/:id" element={<EditProductPage />} />
-          <Route path="/approval" element={<ApprovalPage />} />
+          {<Route path="/approval" element={<ApprovalPage />} />}
           <Route path="/my-products" element={<MyProductsPage />} />
-        <Route path="/report" element={<Reports />} />
+        {/* <Route path="/report" element={<ReportsPage/>} /> */}
           <Route path="/admin/reports" element={<AdminReports />} />
       </Routes>
     </BrowserRouter>

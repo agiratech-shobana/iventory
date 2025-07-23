@@ -1,72 +1,5 @@
-// import React from "react";
-// import { useSelector } from "react-redux";
-// import { RootState } from "../store";
-// import { Product } from "../store/productSlice";
-// import Layout from "../components/Layout";
 
-// const MyProductsPage: React.FC = () => {
-//   const products = useSelector((state: RootState) => state.products.products);
-//     console.log("All products:", products);
-//   const username = useSelector((state: RootState) => state.auth.username);
-
-
-//    console.log("Current username from Redux:", username);
-
-
-//   const myProducts = products.filter(
-//     (product: Product) =>
-//       product.addedBy === username && (product.status === "approved" || product.status === "rejected" || product.status === "pending")
-//   );
-// console.log("My products:", myProducts);
-
-//   return (
-//     <Layout>
-//       <div style={{ padding: "20px" }}>
-//         <h2>My Added Products</h2>
-//         {myProducts.length === 0 ? (
-//           <p>You haven’t added any products yet.</p>
-//         ) : (
-//           <table style={{ width: "100%", borderCollapse: "collapse", marginTop: "20px" }}>
-//             <thead>
-//               <tr style={{ backgroundColor: "#f2f2f2" }}>
-//                 <th style={thStyle}>#</th>
-//                 <th style={thStyle}>Product Name</th>
-//                 <th style={thStyle}>Category</th>
-//                 <th style={thStyle}>Status</th>
-//                 <th style={thStyle}>Description</th>
-//               </tr>
-//             </thead>
-//             <tbody>
-//               {myProducts.map((product, index) => (
-//                 <tr key={product.id} style={{ borderBottom: "1px solid #ccc" }}>
-//                   <td style={tdStyle}>{index + 1}</td>
-//                   <td style={tdStyle}>{product.name}</td>
-//                   <td style={tdStyle}>{product.category}</td>
-//                   <td style={tdStyle}>{product.status}</td>
-//                   <td style={tdStyle}>{product.description}</td>
-//                 </tr>
-//               ))}
-//             </tbody>
-//           </table>
-//         )}
-//       </div>
-//     </Layout>
-//   );
-// };
-
-// const thStyle = {
-//   padding: "10px",
-//   border: "1px solid #ddd",
-//   textAlign: "left" as const,
-// };
-
-// const tdStyle = {
-//   padding: "10px",
-//   border: "1px solid #ddd",
-// };
-
-// export default MyProductsPage;
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { Product } from "../store/productSlice";
@@ -85,9 +18,18 @@ const MyProductsPage: React.FC = () => {
   const rejectedProducts = myProducts.filter((product) => product.status === "rejected");
 
   const [showNotifications, setShowNotifications] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  // Step 3: Set unread count only once when the component loads
+  useEffect(() => {
+    if (rejectedProducts.length > 0) {
+      setUnreadCount(rejectedProducts.length);
+    }
+  }, [rejectedProducts.length]);
 
   const toggleNotifications = () => {
     setShowNotifications((prev) => !prev);
+    setUnreadCount(0); // Clear unread when opened
   };
 
   return (
@@ -99,7 +41,7 @@ const MyProductsPage: React.FC = () => {
           {/* Notification Bell */}
           <div style={{ position: "relative", cursor: "pointer" }} onClick={toggleNotifications}>
             <span style={{ fontSize: "24px" }}>🔔</span>
-            {rejectedProducts.length > 0 && (
+            {unreadCount > 0 && (
               <span
                 style={{
                   position: "absolute",
@@ -112,7 +54,7 @@ const MyProductsPage: React.FC = () => {
                   fontSize: "12px",
                 }}
               >
-                {rejectedProducts.length}
+                {unreadCount}
               </span>
             )}
           </div>

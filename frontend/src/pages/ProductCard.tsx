@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 interface Product {
   id: number;
   name: string;
-  quantity: number;
+  stock: number;
   description: string;
   category: string;
   image: string;
@@ -19,6 +19,7 @@ interface Props {
 
 const ProductCard: React.FC<Props> = ({ product, onDelete }) => {
   const navigate = useNavigate();
+  const role= localStorage.getItem("role");
 
   return (
     <div
@@ -39,7 +40,7 @@ const ProductCard: React.FC<Props> = ({ product, onDelete }) => {
         />
       )}
       <h3>{product.name}</h3>
-      <p><strong>Quantity:</strong> {product.quantity}</p>
+      <p><strong>Quantity:</strong> {product.stock}</p>
       <p><strong>Status:</strong> {product.approved ? "Approved" : "Pending"}</p>
       <p><strong>Category:</strong> {product.category}</p>
 
@@ -49,12 +50,18 @@ const ProductCard: React.FC<Props> = ({ product, onDelete }) => {
       >
         Edit
       </button>
-      <button
+      {role ==="admin" && (
+         <button
         onClick={() => onDelete(product.id)}
         style={{ padding: "0.25rem 0.5rem", backgroundColor: "#e74c3c", color: "#fff" }}
       >
         Delete
       </button>
+
+
+      )}
+     
+     
     </div>
   );
 };

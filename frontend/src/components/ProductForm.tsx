@@ -17,7 +17,9 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, editingProduct }) =
     editingProduct || {
       id: Date.now(),
       name: "",
-      quantity: 0,
+     
+      stock: 0,
+      price:0,
       description: "",
       category: "",
       brand: "",
@@ -26,8 +28,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ onSubmit, editingProduct }) =
       // addedBy: localStorage.getItem("currentUser") || "Unknown", 
       addedBy: localStorage.getItem("username") || "Unknown",
       autoApprove: false, // default value for auto-approve
-      createdAt: new Date().toISOString(), // set current date as createdAt
-
+      createdAt:"", // set current date as createdAt
+      
     }
   );
 
@@ -61,13 +63,7 @@ const { name, value, type, checked } = target;
     }
   };
 
-// const handleSubmit = (e: React.FormEvent) => {
-//   e.preventDefault();
-//   const currentUser = localStorage.getItem("username") || "Unknown";
-//   onSubmit({ ...formData, addedBy: currentUser }); // Inject addedBy before submitting
-//   console.log("Submitting product:", { ...formData, addedBy: currentUser });
 
-// };
 const handleSubmit = (e: React.FormEvent) => {
   e.preventDefault();
   const currentUser = localStorage.getItem("username") || "Unknown";
@@ -106,9 +102,9 @@ const handleSubmit = (e: React.FormEvent) => {
 
       <input
         type="number"
-        name="quantity"
+        name="stock"
         placeholder="Quantity"
-        value={formData.quantity}
+        value={formData.stock}
         onChange={handleChange}
         required
       />
@@ -120,6 +116,17 @@ const handleSubmit = (e: React.FormEvent) => {
         onChange={handleChange}
       />
       <br />
+      <input
+  type="number"
+  name="price"
+  placeholder="Price"
+  value={formData.price}
+  onChange={handleChange}
+  required
+  
+/>
+<br />
+
     
       <select
   name="category"
@@ -141,15 +148,16 @@ const handleSubmit = (e: React.FormEvent) => {
         onChange={handleImageUpload}
       />
       <br />
-      {/* <label>
-        <input
-          type="checkbox"
-          name="approved"
-          checked={formData.approved}
-          onChange={handleChange}
-        />
-        Approved
-      </label> */}
+
+      <input
+  type="date"
+  value={formData.createdAt}
+  onChange={(e) =>
+    setFormData({ ...formData, createdAt: e.target.value })
+  }
+/>
+
+      
       {localStorage.getItem("role") === "admin" && (
   <label>
     <input

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "../api/axios";
 import { useDispatch } from "react-redux";
 import { setUser } from "../store/authSlice";
+import "../styles/Loginstyle.css";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -18,6 +19,9 @@ const Login = () => {
 
     try {
       const res = await axios.post("/login", { username, password });
+
+      console.log("reeeeee",res);
+      
       const { token, role } = res.data;
 
       //  Save user to Redux + localStorage via reducer
@@ -37,27 +41,45 @@ const Login = () => {
   };
 
   return (
-    <div style={{ padding: "2rem" }}>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <input
-          type="text"
-          placeholder="Username"
-          value={username}
+
+    <section className="loginpage" >
+      <div className="login-box">
+        <div className="login-header">
+            <header>Login</header>
+        </div>
+        <form onSubmit={handleLogin}>
+        <div className="input-box">
+             <input
+         type="text"
+         className="input-field"
+           placeholder="Username"
+           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          required
-        /><br /><br />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        /><br /><br />
-        <button type="submit">Login</button>
+           required
+         />
+        </div>
+        <div className="input-box">
+          <input
+           type="password"
+           className="input-field"
+
+           placeholder="Password"
+           value={password}
+           onChange={(e) => setPassword(e.target.value)}
+           required
+         />
+        </div>
+        
+        <div className="input-submit">
+             <button className="submit-btn"  id="submit" type="submit">Login</button>
         {error && <p style={{ color: "red" }}>{error}</p>}
-      </form>
+
+        </div>
+        </form>
+        
     </div>
+    </section>
+
   );
 };
 

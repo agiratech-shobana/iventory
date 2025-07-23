@@ -1,29 +1,31 @@
 
 const express = require("express");
 const router = express.Router();
-const db = require("../config/db"); // mysql connection
+const {
+  addProduct,
+  getAllProducts,
+  deleteProduct,
+  updateProduct,
+  approveProduct,
+  rejectProduct,
+  getAdminDashboardStats,
+  getMyProducts
+} = require("../Controllers/productController");
+// const { verifyToken } = require('../middleware/auth');
 
-// POST /api/products
-router.post("/addProduct", (req, res) => {
-  const {
-    name, brand, quantity, price, description,
-    category, image, status, addedBy
-  } = req.body;
+router.get("/getdashboardData", getAdminDashboardStats)
+router.post("/addProduct", addProduct);
+router.get("/getAllProducts", getAllProducts);
+router.delete("/deleteProduct/:id", deleteProduct);
+router.patch("/updateProduct/:id", updateProduct);
+router.patch("/approve/:id",approveProduct);
+router.patch("/reject/:id",rejectProduct);
 
-  const sql = `
-    INSERT INTO products
-    (name, brand, quantity, price, description, category, image, status, added_by)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-  `;
+// router.get("/myproducts", verifyToken, getMyProducts);
 
-  db.query(
-    sql,
-    [name, brand, quantity, price, description, category, image, status, addedBy],
-    (err, result) => {
-      if (err) return res.status(500).json({ error: err });
-      res.status(201).json({ id: result.insertId, ...req.body });
-    }
-  );
-});
+
+
 
 module.exports = router;
+
+

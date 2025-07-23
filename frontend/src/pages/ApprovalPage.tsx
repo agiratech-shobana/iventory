@@ -1,23 +1,56 @@
 
-
+import  { useEffect } from "react";
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
-import { approveProduct, rejectProduct, Product } from "../store/productSlice";
+import { AppDispatch } from "../store"
+import { approveProduct, rejectProduct, fetchProducts } from "../store/productSlice";
 import Layout from "../components/Layout";
 
 const ApprovalPage: React.FC = () => {
-  const dispatch = useDispatch();
-  const username = localStorage.getItem("currentUser");
+  // const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>(); 
+  // const username = localStorage.getItem("currentUser");
 
-  const products = useSelector((state: RootState) => state.products.products);
-  const pendingProducts = products.filter((product: Product) => product.status === "pending");
-  const role = useSelector((state: RootState) => state.auth.role);
+  // const products = useSelector((state: RootState) => state.products.products);
+  // const pendingProducts = products.filter((product: Product) => product.status === "pending");
+  // const role = useSelector((state: RootState) => state.auth.role);
   
+  const products = useSelector((state: RootState) => state.products.products);
+  const loading = useSelector((state: RootState) => state.products.loading);
+  const error = useSelector((state: RootState) => state.products.error);
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+  // ✅ Filter products with pending status
+  const pendingProducts = products.filter(
+    (product) => product.status === "pending"
+  );
+
+  // ✅ Approve button handler
+  const handleApprove = (productId: number) => {
+    dispatch(approveProduct(productId));
+  };
+
+  // ✅ Reject button handler
+  const handleReject = (productId: number) => {
+    dispatch(rejectProduct(productId));
+  };
+
+
+
+
+
+
+
+
+
   return (
     <Layout>
       
-      <div style={{ padding: "20px" }}>
+      {/* <div style={{ padding: "20px" }}>
         <h2>🕒 Approval Queue</h2>
         <h3 style={{ padding: "10px 20px" }}>👋 Welcome, {username}</h3>
         {role !== "admin" && (
@@ -91,7 +124,62 @@ const ApprovalPage: React.FC = () => {
             </tbody>
           </table>
         )}
-      </div>
+      </div> */}
+
+       <div>
+      <h2>Pending Product Approvals</h2>
+
+      {loading ? (
+        <p>Loading products...</p>
+      ) : error ? (
+        <p style={{ color: "red" }}>Error: {error}</p>
+      ) : pendingProducts.length === 0 ? (
+        <p>No pending products to review.</p>
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Brand</th>
+              <th>Category</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {pendingProducts.map((product) => (
+              <tr key={product.id}>
+                <td>{product.name}</td>
+                <td>{product.brand}</td>
+                <td>{product.category}</td>
+                <td>
+                  <button
+                    onClick={() => handleApprove(product.id)}
+                    style={{
+                      marginRight: "10px",
+                      backgroundColor: "green",
+                      color: "#fff",
+                      padding: "5px 10px",
+                    }}
+                  >
+                    Approve
+                  </button>
+                  <button
+                    onClick={() => handleReject(product.id)}
+                    style={{
+                      backgroundColor: "red",
+                      color: "#fff",
+                      padding: "5px 10px",
+                    }}
+                  >
+                    Reject
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </div>
     </Layout>
   );
 };

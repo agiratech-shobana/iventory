@@ -5,7 +5,7 @@ import { RootState } from "../store";
 const Header = () => {
   const role = useSelector((state: RootState) => state.auth.role);
   return (
-    <div style={{ backgroundColor: "#222", color: "white", padding: "1rem" }}>
+    <div className="header">
       <h2>Inventory App - {role?.toUpperCase()}</h2>
     </div>
   );

@@ -1,70 +1,6 @@
-// import { useState } from "react";
-// import axios from "../api/axios";
 
-// const RegisterUserForm = () => {
-//   const [formData, setFormData] = useState({
-//     username: "",
-//     password: "",
-//   });
-
-//   const [success, setSuccess] = useState("");
-//   const [error, setError] = useState("");
-
-//   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//     setFormData({ ...formData, [e.target.name]: e.target.value });
-//   };
-
-//   const handleSubmit = async (e: React.FormEvent) => {
-//     e.preventDefault();
-//     setError("");
-//     setSuccess("");
-
-//     try {
-//       // ✅ Add role directly in request payload
-//       const res = await axios.post("/register", {
-//         ...formData,
-//         role: "user", // 👈 hardcoded here
-//       });
-
-//       setSuccess("User registered successfully!");
-//       setFormData({ username: "", password: "" });
-//     } catch (err: any) {
-//       setError(err.response?.data?.message || "Registration failed.");
-//     }
-//   };
-
-//   return (
-//     <div style={{ padding: "1rem", maxWidth: "400px" }}>
-//       <h3>Register New User</h3>
-//       <form onSubmit={handleSubmit}>
-//         <input
-//           type="text"
-//           name="username"
-//           placeholder="Username"
-//           value={formData.username}
-//           onChange={handleChange}
-//           required
-//         /><br /><br />
-//         <input
-//           type="password"
-//           name="password"
-//           placeholder="Password"
-//           value={formData.password}
-//           onChange={handleChange}
-//           required
-//         /><br /><br />
-//         <button type="submit">Register</button>
-//         {success && <p style={{ color: "green" }}>{success}</p>}
-//         {error && <p style={{ color: "red" }}>{error}</p>}
-//       </form>
-//     </div>
-//   );
-// };
-
-// export default RegisterUserForm;
 import { useState } from "react";
 import axios from "../api/axios";
-
 const RegisterUserForm = () => {
   const [formData, setFormData] = useState({
     username: "",
@@ -125,17 +61,32 @@ const RegisterUserForm = () => {
   };
 
   return (
-    <div style={{ padding: "1rem", maxWidth: "400px" }}>
-      <h3>Register New User</h3>
-      <form onSubmit={handleSubmit}>
+    <div className="register-container"  style={{
+        padding: "1rem",
+        maxWidth: "400px",
+        margin: "0 auto",
+        border: "1px solid #ccc",
+        borderRadius: "8px",
+      }}>
+      {/* <h3 className="form-title">Register New User</h3> */}
+      <form onSubmit={handleSubmit} className="register-form">
         <input
           type="text"
           name="username"
           placeholder="Username"
           value={formData.username}
           onChange={handleChange}
+          className="form-input"
+           style={{
+            padding: "0.5rem",
+            width: "100%",
+            marginBottom: "0.25rem",
+            borderRadius: "4px",
+            border: "1px solid #ccc",
+            
+          }}
         />
-        {formErrors.username && <p style={{ color: "red" }}>{formErrors.username}</p>}
+        {formErrors.username && <p style={{ color: "red",marginTop:0 }}>{formErrors.username}</p>}
         <br />
 
         <input
@@ -144,14 +95,32 @@ const RegisterUserForm = () => {
           placeholder="Password"
           value={formData.password}
           onChange={handleChange}
+          className="form-input"
+          style={{
+            padding: "0.5rem",
+            width: "100%",
+            marginTop: "0.5rem",
+            marginBottom: "0.25rem",
+            borderRadius: "4px",
+            border: "1px solid #ccc",
+          }}
         />
-        {formErrors.password && <p style={{ color: "red" }}>{formErrors.password}</p>}
+        {formErrors.password && <p style={{ color: "red",marginTop:0 }}>{formErrors.password}</p>}
         <br />
 
-        <button type="submit">Register</button>
+        <button type="submit" className="form-button"  style={{
+            marginTop: "0.5rem",
+            width: "100%",
+            padding: "0.5rem",
+            backgroundColor: "#3498db",
+            color: "#fff",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+          }}>Register</button>
 
-        {success && <p style={{ color: "green" }}>{success}</p>}
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        {success && <p style={{ color: "green",marginTop:"0.5rem" }}>{success}</p>}
+        {error && <p style={{ color: "red" ,marginTop:"0.5rem" }}>{error}</p>}
       </form>
     </div>
   );
